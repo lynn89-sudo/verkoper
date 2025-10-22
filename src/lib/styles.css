@@ -1,0 +1,9 @@
+h1 {
+    font-family: Montserrat, Space Grotesk, Futura;
+    text-align: center;
+    font-size: 70px;
+}
+h2, h3 {
+    font-family: Space Grotesk, Montserrat, Futura;
+    text-align: center;
+}
