@@ -7,3 +7,22 @@ h2, h3 {
     font-family: Space Grotesk, Montserrat, Futura;
     text-align: center;
 }
+h4, h5 {
+    font-family: Montserrat, Space Grotesk, Futura;
+    text-align: center;
+}
+button {
+    background-color: #38002f;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 30px;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    font-family: Space Grotesk, Montserrat;
+}
+button:hover {
+    background-color: #721062;
+    transform: scale(1.05);
+}
