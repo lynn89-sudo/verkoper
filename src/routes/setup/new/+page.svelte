@@ -2,11 +2,10 @@
     import { fly, scale, slide } from "svelte/transition";
     import { cubicInOut } from "svelte/easing";
     import { onMount } from "svelte";
+    import { base } from "$app/paths";
 
-    let awaitStart = false;
+    let awaitStart = $state(false);
     let fundraiserName = '';
-    let clubName = '';
-    let currency = '$';
     let fundraisers = [];
 
     onMount(() => {
@@ -28,8 +27,24 @@
         }
     });
 
+    let formName = $state("");
+    let formClub = $state("");
+    let formCurrency = $state("$");
+    let formId = $state(0);
     function handleSubmit(event) {
-       
+       let clock = new Date();
+        formId = clock.getTime();
+
+        let data = [
+            formName,
+            formClub,
+            formCurrency,
+            [],
+            formId
+        ]
+
+        localStorage.setItem("fundraiser-" + formId, JSON.stringify(data));
+        window.location.href = base + "/setup";
     }
 </script>
 <svelte:head>
@@ -66,13 +81,13 @@
 {/if}
 {#if awaitStart}
     <div transition:fly={{ easing: cubicInOut, y: 50, duration: 1000, delay: 500 }}>
-        <form id="newFundraiser" on:submit|preventDefault={handleForm}>
+        <form id="newFundraiser" onsubmit={() => {handleSubmit()}}>
             <label for="fundraiserName">Fundraiser Name:</label><br><br>
-            <input type="text" id="fundraiserName" placeholder = "Oct. 23 Breakfast Sale" name="fundraiserName" required><br><br>
+            <input bind:value={formName} type="text" id="fundraiserName" placeholder = "Oct. 23 Breakfast Sale" name="fundraiserName" required><br><br>
             <label for="beneficiaryName">Club/Event Name:</label><br><br>
-            <input type="text" id="clubName" placeholder = "Coding Café" name="clubName" required><br><br>
+            <input bind:value={formClub} type="text" id="clubName" placeholder = "Coding Café" name="clubName" required><br><br>
             <label for="beneficiaryName">Currency Unit:</label><br><br>
-            <input type="text" id="clubName" name="clubName" required placeholder="$"><br><br>
+            <input bind:value={formCurrency} type="text" id="currency" name="currency" required placeholder="$"><br><br>
             <button type="submit">Create Fundraiser</button>
         </form>
     </div>
