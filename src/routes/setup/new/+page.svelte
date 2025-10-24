@@ -29,7 +29,7 @@
 
     let formName = $state("");
     let formClub = $state("");
-    let formCurrency = $state("$");
+    let formCurrency = $state("");
     let formId = $state(0);
     function handleSubmit(event) {
        let clock = new Date();

@@ -11,8 +11,9 @@
     })
 
     let fundraisers = [];
+    let ids = [];
     onMount(function() {
-        for (i = 0; i < localStorage.length; i++) {
+        for (let i = localStorage.length - 1; i >= 0; i--) {
             if (localStorage.key(i).startsWith("fundraiser-")) {
                 let data = JSON.parse(localStorage.getItem(localStorage.key(i)));
                 fundraisers.push(data[0] + " for " + data[1]);
@@ -41,6 +42,14 @@
         border-bottom-left-radius: 20px;
         color: white;
     }
+
+    #existingFundraisers {
+        background-color: rgb(236, 206, 210);
+        padding: 20px;
+        border-radius: 15px;
+        margin-left: 20px;
+        margin-right: 20px;
+    }
 </style>
 {#if awaitStart}
     <div id="header" transition:fly={{ y: -200, duration: 800, easing: cubicInOut }}>
@@ -56,11 +65,14 @@
 {#if awaitStart}
     <div transition:fly={{ easing: cubicInOut, y: 50, duration: 1000, delay: 1300 }}>
         <h3><button id="new-fundraiser" onclick={() => {window.location.href = "/setup/new"}}><span style:font-size="35px" style:transform="translateY(2px)"class="material-symbols-outlined">add_circle</span></button></h3>
-        {#each fundraisers as fundraiser}
-            console.log(fundraiser);
-        {/each}
         {#if fundraisers.length === 0}
             <h4>No fundraisers found. Create a new one to get started!</h4>
+        {:else}
+            <div id="existingFundraisers">
+                {#each fundraisers as fundraiser}
+                    <h3><button>{fundraiser}</button></h3>
+                {/each}
+            </div>
         {/if}
     </div>
 {/if}
