@@ -3,22 +3,34 @@
     import { cubicInOut } from "svelte/easing";
     import { onMount } from "svelte";
 
-    let awaitStart = $state(false);
+    let awaitStart = false;
+    let fundraiserName = '';
+    let clubName = '';
+    let currency = '$';
+    let fundraisers = [];
+
     onMount(() => {
         setTimeout(() => {
             awaitStart = true;
         }, 100);
-    })
 
-    let fundraisers = [];
-    onMount(function() {
-        for (i = 0; i < localStorage.length; i++) {
-            if (localStorage.key(i).startsWith("fundraiser-")) {
-                let data = JSON.parse(localStorage.getItem(localStorage.key(i)));
-                fundraisers.push(data[0] + " for " + data[1]);
+        // load existing fundraisers from localStorage
+        for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+            if (key && key.startsWith("fundraiser-")) {
+                try {
+                    const data = JSON.parse(localStorage.getItem(key));
+                    fundraisers.push(data[0] + " for " + data[1]);
+                } catch (e) {
+                    // ignore malformed entries
+                }
             }
         }
-    })
+    });
+
+    function handleSubmit(event) {
+       
+    }
 </script>
 <svelte:head>
     <title>Verkoper | Create Fundraiser</title>
@@ -49,18 +61,20 @@
 
 <div style="height: 160px;"></div>
 {#if awaitStart}
-    <h2 transition:scale={{delay: 1000, ease:cubicInOut}}>Fill in the details for your new fundraiser</h2>
+    <h2 transition:scale={{delay: 200, ease:cubicInOut}}>Fill in the details for your new fundraiser</h2>
     <br>
 {/if}
 {#if awaitStart}
-    <div transition:fly={{ easing: cubicInOut, y: 50, duration: 1000, delay: 1300 }}>
-        <h3><button id="new-fundraiser" onclick={() => {window.location.href = "/setup/new"}}><span style:font-size="35px" style:transform="translateY(2px)"class="material-symbols-outlined">add_circle</span></button></h3>
-        {#each fundraisers as fundraiser}
-            console.log(fundraiser);
-        {/each}
-        {#if fundraisers.length === 0}
-            <h4>No fundraisers found. Create a new one to get started!</h4>
-        {/if}
+    <div transition:fly={{ easing: cubicInOut, y: 50, duration: 1000, delay: 500 }}>
+        <form id="newFundraiser" on:submit|preventDefault={handleForm}>
+            <label for="fundraiserName">Fundraiser Name:</label><br><br>
+            <input type="text" id="fundraiserName" placeholder = "Oct. 23 Breakfast Sale" name="fundraiserName" required><br><br>
+            <label for="beneficiaryName">Club/Event Name:</label><br><br>
+            <input type="text" id="clubName" placeholder = "Coding Café" name="clubName" required><br><br>
+            <label for="beneficiaryName">Currency Unit:</label><br><br>
+            <input type="text" id="clubName" name="clubName" required placeholder="$"><br><br>
+            <button type="submit">Create Fundraiser</button>
+        </form>
     </div>
 {/if}
 

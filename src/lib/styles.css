@@ -26,3 +26,23 @@ button:hover {
     background-color: #721062;
     transform: scale(1.05);
 }
+
+form {
+    font-family: Montserrat, Space Grotesk, Futura;
+    font-weight: 800;
+    color: white;
+    background-color: rgb(122, 96, 122);
+    text-align: center;
+    padding: 30px;
+    border-radius: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+
+    input {
+        border-radius: 20px;
+        border: none;
+        padding: 8px;
+        font-family: Space Grotesk, Montserrat;
+        font-size: 15px;
+    }
+}
