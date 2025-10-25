@@ -11,28 +11,35 @@
             awaitStart = true;
         }, 100);
 
-
+        if (sessionStorage.getItem("editingFundraiserId") == null) {
+            window.location.href = base + "error";
+        }
     });
 
     let formName = $state("");
     let formClub = $state("");
     let formCurrency = $state("");
-    let formId = $state(0);
     function handleSubmit(event) {
-       let clock = new Date();
-        formId = clock.getTime();
+        let editingId = sessionStorage.getItem("editingFundraiserId");
 
         let data = [
             formName,
             formClub,
             formCurrency,
             [],
-            formId
+            editingId
         ]
 
-        localStorage.setItem("fundraiser-" + formId, JSON.stringify(data));
-        window.location.href = base + "/setup";
+        localStorage.setItem("fundraiser-" + editingId, JSON.stringify(data));
+        window.location.href = base + "/setup/edit";
     }
+    onMount(() => {
+        let editingId = sessionStorage.getItem("editingFundraiserId");
+        let data = JSON.parse(localStorage.getItem("fundraiser-" + editingId));
+        formName = data[0];
+        formClub = data[1];
+        formCurrency = data[2];
+    })
 </script>
 <svelte:head>
     <title>Verkoper | Create Fundraiser</title>
@@ -63,7 +70,7 @@
 
 <div style="height: 160px;"></div>
 {#if awaitStart}
-    <h2 transition:scale={{delay: 200, ease:cubicInOut}}>Fill in the details for your new fundraiser</h2>
+    <h2 transition:scale={{delay: 200, ease:cubicInOut}}>Edit information or add food items to your new fundraiser</h2>
     <br>
 {/if}
 {#if awaitStart}
@@ -75,7 +82,7 @@
             <input bind:value={formClub} type="text" id="clubName" placeholder = "Coding Café" name="clubName" required><br><br>
             <label for="beneficiaryName">Currency Unit:</label><br><br>
             <input bind:value={formCurrency} type="text" id="currency" name="currency" required placeholder="$"><br><br>
-            <button type="submit">Create Fundraiser</button>
+            <button type="submit">Save</button>
         </form>
     </div>
 {/if}

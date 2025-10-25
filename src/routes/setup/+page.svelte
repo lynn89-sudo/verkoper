@@ -2,6 +2,7 @@
     import { fly, scale, slide } from "svelte/transition";
     import { cubicInOut } from "svelte/easing";
     import { onMount } from "svelte";
+    import { base } from "$app/paths";
 
     let awaitStart = $state(false);
     onMount(() => {
@@ -16,10 +17,15 @@
         for (let i = localStorage.length - 1; i >= 0; i--) {
             if (localStorage.key(i).startsWith("fundraiser-")) {
                 let data = JSON.parse(localStorage.getItem(localStorage.key(i)));
-                fundraisers.push(data[0] + " for " + data[1]);
+                fundraisers.push([data[0] + " for " + data[1], data[4]]);
             }
         }
     })
+
+    function edit(id) {
+        sessionStorage.setItem("editingFundraiserId", id);
+        window.location.href = base + "/setup/edit/";
+    }
 </script>
 <svelte:head>
     <title>Verkoper | Setup Fundraiser</title>
@@ -64,13 +70,13 @@
 {/if}
 {#if awaitStart}
     <div transition:fly={{ easing: cubicInOut, y: 50, duration: 1000, delay: 1300 }}>
-        <h3><button id="new-fundraiser" onclick={() => {window.location.href = "/setup/new"}}><span style:font-size="35px" style:transform="translateY(2px)"class="material-symbols-outlined">add_circle</span></button></h3>
+        <h3><button id="new-fundraiser" onclick={() => {window.location.href = base + "/setup/new"}}><span style:font-size="35px" style:transform="translateY(2px)"class="material-symbols-outlined">add_circle</span></button></h3>
         {#if fundraisers.length === 0}
             <h4>No fundraisers found. Create a new one to get started!</h4>
         {:else}
             <div id="existingFundraisers">
                 {#each fundraisers as fundraiser}
-                    <h3><button>{fundraiser}</button></h3>
+                    <h3><button onclick={() => {edit(fundraiser[1])}}>{fundraiser[0]}</button></h3>
                 {/each}
             </div>
         {/if}
