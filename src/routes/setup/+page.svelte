@@ -4,6 +4,8 @@
     import { onMount } from "svelte";
     import { base } from "$app/paths";
 
+    import Return from "$lib/return.svelte";
+    
     let awaitStart = $state(false);
     onMount(() => {
         setTimeout(() => {
@@ -27,6 +29,7 @@
         window.location.href = base + "/setup/edit/";
     }
 </script>
+<Return source=""/>
 <svelte:head>
     <title>Verkoper | Setup Fundraiser</title>
 </svelte:head>

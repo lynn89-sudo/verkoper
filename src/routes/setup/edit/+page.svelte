@@ -4,6 +4,8 @@
     import { onMount } from "svelte";
     import { base } from "$app/paths";
 
+    import Return from "$lib/return.svelte";
+
     let awaitStart = $state(false);
 
     onMount(() => {
@@ -63,6 +65,7 @@
         color: white;
     }
 </style>
+<Return source="setup"/>
 <div id="header" transition:fly={{ y: -200, duration: 800, easing: cubicInOut }}>
     <h1>SETUP FUNDRAISER</h1>
     <h3>Configuration wizard to set up your fundraiser kiosk</h3>
