@@ -42,6 +42,12 @@
         formClub = data[1];
         formCurrency = data[2];
     })
+
+    function deleteFundraiser() {
+        localStorage.removeItem("fundraiser-" + sessionStorage.getItem("editingFundraiserId"));
+        sessionStorage.removeItem("editingFundraiserId");
+        window.location.href = base + "/setup";
+    }
 </script>
 <svelte:head>
     <title>Verkoper | Create Fundraiser</title>
@@ -78,7 +84,11 @@
 {/if}
 {#if awaitStart}
     <div transition:fly={{ easing: cubicInOut, y: 50, duration: 1000, delay: 500 }}>
-        <form id="newFundraiser" onsubmit={() => {handleSubmit()}}>
+        <form id="deleteFundraiser">
+            <button onclick={() => {deleteFundraiser()}}>Delete Fundraiser</button>
+            <h3>This action cannot be undone</h3>
+        </form><br>
+        <form id="editFundraiser" onsubmit={() => {handleSubmit()}}>
             <label for="fundraiserName">Fundraiser Name:</label><br><br>
             <input bind:value={formName} type="text" id="fundraiserName" placeholder = "Oct. 23 Breakfast Sale" name="fundraiserName" required><br><br>
             <label for="beneficiaryName">Club/Event Name:</label><br><br>
